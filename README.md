@@ -1,4 +1,5 @@
 # Event-Based Object Tracking with Dynamic Vision Sensors
+![Reference Visualization](reference.gif)
 
 ## Project Description
 
