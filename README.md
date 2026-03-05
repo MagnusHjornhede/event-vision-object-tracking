@@ -1,16 +1,16 @@
 # Event-Based Object Tracking with Dynamic Vision Sensors
 
+<br>
+
 ![Reference Visualization](reference.gif)
 
 This project implements an object tracking pipeline using event-based data from a Dynamic Vision Sensor (DVS).
 
 Unlike conventional frame-based cameras that capture images at fixed frame rates, event cameras asynchronously report brightness changes with microsecond temporal resolution. This fundamentally different sensing paradigm enables low-latency, high-dynamic-range perception.
 
-The implementation is contained in:
+Implementation: `ObjectTrackingWithEventCamera.ipynb`
 
-ObjectTrackingWithEventCamera.ipynb
-
----
+<br>
 
 ## Project Goal
 
@@ -28,13 +28,24 @@ If you're new to event-based vision:
 - Event camera overview: https://ieeexplore.ieee.org/document/4444573  
 - Survey on event-based vision (Gallego et al., 2020): https://arxiv.org/abs/1904.08405  
 
----
+<br>
+
+## Pipeline
+
+event stream
+→ temporal binning
+→ event frames
+→ feature extraction
+→ spiking neural network
+→ angular velocity estimation
+
+<br>
 
 ## Event Representation
 
 Each event is represented as:
 
-(x, y, t, p)
+`(x, y, t, p)`
 
 where:
 
@@ -46,7 +57,7 @@ Events are grouped into fixed temporal bins and converted into grid-based repres
 
 This transforms asynchronous event streams into structured tensors while preserving temporal dynamics.
 
----
+<br>
 
 ## Ground Truth Generation
 
@@ -78,13 +89,13 @@ If unfamiliar with these techniques:
 - Canny edge detection: https://en.wikipedia.org/wiki/Canny_edge_detector  
 - Hough transform: https://en.wikipedia.org/wiki/Hough_transform  
 
----
+<br>
 
 ## Model Architecture
 
 The model predicts angular increments rather than absolute angles:
 
-Δθ(t)
+Δθ(t) 
 
 ### Input Representation
 
@@ -96,7 +107,7 @@ For each temporal window:
 - Log-scaled
 - Flattened into feature vectors
 
----
+<br>
 
 ### Network Structure
 
@@ -109,7 +120,7 @@ LIF neurons maintain membrane state across timesteps, enabling temporal integrat
 The implementation uses spiking dynamics inspired by neuromorphic computing frameworks such as:
 - snnTorch: https://snntorch.readthedocs.io/
 
----
+<br>
 
 ## Training Objective
 
@@ -124,15 +135,33 @@ Total loss = local motion accuracy + global trajectory consistency
 
 This prevents drift and stabilizes long-term motion estimation.
 
----
+<br>
 
-## Why This Approach?
+## Why Event-Based Tracking?
 
-This project combines:
+This project combines several modern research ideas:
 
-- Event-based sensing
-- Classical vision for self-generated ground truth
-- Spiking neural networks
-- Trajectory-aware supervision
+- **event-based sensing**
+- **self-generated ground truth via classical vision**
+- **spiking neural networks**
+- **trajectory-aware training**
 
-It serves as a compact example of continuous-time tracking using asynchronous sensor data and neuromorphic-inspired models.
+Together they form a compact example of **continuous-time tracking using asynchronous sensors** and **neuromorphic-inspired models**.
+
+<br>
+
+## References
+
+If you're new to event-based vision:
+
+Event camera overview  
+https://ieeexplore.ieee.org/document/4444573
+
+Event-based vision survey (Gallego et al., 2020)  
+https://arxiv.org/abs/1904.08405
+
+Canny edge detector  
+https://en.wikipedia.org/wiki/Canny_edge_detector
+
+Hough transform  
+https://en.wikipedia.org/wiki/Hough_transform
